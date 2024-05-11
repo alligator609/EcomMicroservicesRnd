@@ -1,4 +1,5 @@
-﻿using Ecom.Services.CouponApi.Data;
+﻿using AutoMapper;
+using Ecom.Services.CouponApi.Data;
 using Ecom.Services.CouponApi.Models;
 using Ecom.Services.CouponApi.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace Ecom.Services.CouponApi.Controllers
     {
         private readonly ApplicationDbContext _applicationDbContext;
         public ResponseDto _responseDto;
-        public CouponController(ApplicationDbContext applicationDbContext)
+        private  IMapper _mapper;
+        public CouponController(ApplicationDbContext applicationDbContext, IMapper mapper)
         {
             _applicationDbContext = applicationDbContext;
             _responseDto = new ResponseDto();
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -24,7 +27,7 @@ namespace Ecom.Services.CouponApi.Controllers
             try
             {
                 IEnumerable<Coupon> coupons = _applicationDbContext.Coupons.ToList();
-                _responseDto.Result = coupons;
+                _responseDto.Result = _mapper.Map<IEnumerable<CouponDto>>(coupons);
             }
             catch (Exception ex)
             {
@@ -39,7 +42,38 @@ namespace Ecom.Services.CouponApi.Controllers
             try
             {
                 var coupon = _applicationDbContext.Coupons.FirstOrDefault(x => x.Id == id);
-                _responseDto.Result = coupon;
+                if (coupon == null)
+                {
+                    _responseDto.IsSuccess = false;
+                    _responseDto.Message = "Coupon not found";
+                }
+                else
+                {
+                    _responseDto.Result = _mapper.Map<CouponDto>(coupon);
+                }
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+        [HttpGet("GetByCode/{code}")]
+        public ResponseDto GetCoupon(string code)
+        {
+            try
+            {
+                var coupon = _applicationDbContext.Coupons.FirstOrDefault(x => x.Code.ToLower() == code.ToLower());
+                if (coupon == null)
+                {
+                    _responseDto.IsSuccess = false;
+                    _responseDto.Message = "Coupon not found";
+                }
+                else
+                {
+                    _responseDto.Result = _mapper.Map<CouponDto>(coupon);
+                }
             }
             catch (Exception ex)
             {
@@ -53,9 +87,10 @@ namespace Ecom.Services.CouponApi.Controllers
         {
             try
             {
-                _applicationDbContext.Coupons.Add(coupon);
+                Coupon obj = _mapper.Map<Coupon>(coupon);
+                _applicationDbContext.Coupons.Add(obj);
                 _applicationDbContext.SaveChanges();
-                _responseDto.Result = coupon;
+                _responseDto.Result = _mapper.Map<CouponDto>(obj);
             }
             catch (Exception ex)
             {
@@ -71,7 +106,7 @@ namespace Ecom.Services.CouponApi.Controllers
             {
                 _applicationDbContext.Entry(coupon).State = EntityState.Modified;
                 _applicationDbContext.SaveChanges();
-                _responseDto.Result = coupon;
+                _responseDto.Result = _mapper.Map<CouponDto>(coupon);
             }
             catch (Exception ex)
             {
