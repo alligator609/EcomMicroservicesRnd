@@ -10,7 +10,7 @@ namespace Ecom.Services.CouponApi.Models
         public string Code { get; set; }
         [Required]
         public double DiscountAmount { get; set; }
-        public int MinAmount { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public int? MinAmount { get; set; }
+        public DateTime? LastUpdated { get; set; } = new DateTime();
     }
 }
