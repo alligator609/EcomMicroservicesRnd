@@ -33,7 +33,8 @@ namespace Ecom.Services.AuthApi.Service
                     Token = ""
                 };
             }
-
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwtTokenGenerator.GenerateToken(user, roles);
             UserDto userDto = new()
             {
                 Email = user.Email,
@@ -44,7 +45,7 @@ namespace Ecom.Services.AuthApi.Service
             return new LoginResponseDto()
             {
                 User = userDto,
-                Token = _jwtTokenGenerator.GenerateToken(user)
+                Token = token
             };
         }
 
