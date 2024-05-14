@@ -42,5 +42,19 @@ namespace Ecom.Services.AuthApi.Controllers
             _response.Result = loginReponse;
             return Ok(_response);
         }
+
+        [HttpPost("assaignRole")]
+        public async Task<IActionResult> AssaignRole([FromBody] RegistrationRequestDto request)
+        {
+            var assaignRoleSuccessfull = await _service.AssaignRole(request.Email, request.RoleName.ToUpper());
+            if (!assaignRoleSuccessfull)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Role assaign failed";
+                return BadRequest(_response);
+            }
+            _response.Result = assaignRoleSuccessfull;
+            return Ok(_response);
+        }
     }
 }

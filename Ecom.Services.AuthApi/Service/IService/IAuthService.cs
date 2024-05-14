@@ -6,5 +6,7 @@ namespace Ecom.Services.AuthApi.Service.IService
     {
         Task<LoginResponseDto> LoginAsync(LoginRequestDto request);
         Task<string> RegisterAsync(RegistrationRequestDto request);
+        Task<bool> AssaignRole(string email,string roleName);
+
     }
 }
