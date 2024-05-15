@@ -85,6 +85,7 @@ namespace Ecom.Services.CouponApi.Controllers
             return _responseDto;
         }
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto CreateCoupon([FromBody] Coupon coupon)
         {
             try
@@ -102,6 +103,7 @@ namespace Ecom.Services.CouponApi.Controllers
             return _responseDto;
         }
         [HttpPut]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto UpdateCoupon([FromBody] Coupon coupon)
         {
             try
@@ -118,6 +120,7 @@ namespace Ecom.Services.CouponApi.Controllers
             return _responseDto;
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto DeleteCoupon(int id)
         {
             try
