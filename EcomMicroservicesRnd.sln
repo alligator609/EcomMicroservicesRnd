@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecom.Services.CouponApi", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecom.Web", "Ecom.Web\Ecom.Web.csproj", "{787A7592-AAC0-4035-94B6-E364B9B38E54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecom.Services.AuthApi", "Ecom.Services.AuthApi\Ecom.Services.AuthApi.csproj", "{BF481848-ABE1-465A-B1EE-2BC637102A55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecom.Services.AuthApi", "Ecom.Services.AuthApi\Ecom.Services.AuthApi.csproj", "{BF481848-ABE1-465A-B1EE-2BC637102A55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecom.Services.ProductApi", "Ecom.Services.ProductApi\Ecom.Services.ProductApi.csproj", "{E52AB3AF-901C-4D4C-B059-FCBE1CE4FBFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{BF481848-ABE1-465A-B1EE-2BC637102A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF481848-ABE1-465A-B1EE-2BC637102A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF481848-ABE1-465A-B1EE-2BC637102A55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E52AB3AF-901C-4D4C-B059-FCBE1CE4FBFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E52AB3AF-901C-4D4C-B059-FCBE1CE4FBFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E52AB3AF-901C-4D4C-B059-FCBE1CE4FBFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E52AB3AF-901C-4D4C-B059-FCBE1CE4FBFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +49,7 @@ Global
 		{85A735F7-A5F6-499E-BC9A-5AA4E1E25510} = {C90971B7-70C4-43C0-A88D-FF1E4A8B6480}
 		{787A7592-AAC0-4035-94B6-E364B9B38E54} = {D7499D62-855A-4BB5-8D02-3D0F357140E2}
 		{BF481848-ABE1-465A-B1EE-2BC637102A55} = {C90971B7-70C4-43C0-A88D-FF1E4A8B6480}
+		{E52AB3AF-901C-4D4C-B059-FCBE1CE4FBFE} = {C90971B7-70C4-43C0-A88D-FF1E4A8B6480}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7F2B6188-2F78-4321-9C08-B30C92374D4F}
