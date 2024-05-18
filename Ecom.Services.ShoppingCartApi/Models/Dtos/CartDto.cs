@@ -2,7 +2,7 @@
 {
     public class CartDto
     {
-        public CartHeaderDto CartHeaderDto { get; set; }
-        public List<CartDetailsDto> CartDetailsDto { get; set; }
+        public CartHeaderDto CartHeader { get; set; }
+        public List<CartDetailsDto> CartDetails { get; set; }
     }
 }

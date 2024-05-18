@@ -12,7 +12,6 @@ namespace Ecom.Services.ShoppingCartApi.Models
         [NotMapped]
         public decimal Discount { get; set; }
         [NotMapped]
-
         public decimal CartTotal { get; set; }
 
     }
