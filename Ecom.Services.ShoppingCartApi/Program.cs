@@ -23,9 +23,15 @@ IMapper mapper = MappingConfig.Initialize().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+
 builder.Services.AddHttpClient("Product", config =>
 {
     config.BaseAddress = new Uri(builder.Configuration["ServicesUrls:ProductApi"]);
+});
+builder.Services.AddHttpClient("Coupon", config =>
+{
+    config.BaseAddress = new Uri(builder.Configuration["ServicesUrls:CouponApi"]);
 });
 
 builder.Services.AddControllers();

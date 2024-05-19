@@ -4,23 +4,28 @@ using Ecom.Services.ShoppingCartApi.Data;
 using Ecom.Services.ShoppingCartApi.Models;
 using Ecom.Services.ShoppingCartApi.Models.Dtos;
 using Ecom.Services.ShoppingCartApi.Services.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CartAPIController : ControllerBase
 {
     private readonly ApplicationDbContext _applicationDbContext;
     public ResponseDto _responseDto;
     private IMapper _mapper;
     private IProductService _productService;
-    public CartAPIController(ApplicationDbContext applicationDbContext, IMapper mapper, IProductService productService)
+    private ICouponService _couponService;
+
+    public CartAPIController(ApplicationDbContext applicationDbContext, IMapper mapper, IProductService productService, ICouponService couponService)
     {
         _applicationDbContext = applicationDbContext;
         _responseDto = new ResponseDto();
         _mapper = mapper;
         _productService = productService;
+        _couponService = couponService;
     }
 
     [HttpGet("GetCart/{userId}")]
@@ -35,14 +40,24 @@ public class CartAPIController : ControllerBase
             };
             var cartDetails = _applicationDbContext.CartDetails.Where(x => x.CartHeaderId == cartHeader.Id);
             cartDto.CartDetails = (List<CartDetailsDto>)_mapper.Map<IList<CartDetailsDto>>(cartDetails);
-
+            
             IEnumerable<ProductDto> products = await _productService.GetProducts();
+
 
             foreach (var cartDetail in cartDto.CartDetails)
             {
                 cartDetail.Product = products.FirstOrDefault(x => x.Id == cartDetail.ProductId);
                 cartDto.CartHeader.CartTotal += cartDetail.Count * cartDetail.Product.Price;
             }
+            if (!string.IsNullOrEmpty(cartDto.CartHeader.CouponCode))
+            {
+                CouponDto coupon = await _couponService.GetCoupon(cartDto.CartHeader.CouponCode);
+                if (coupon != null)
+                {
+                    cartDto.CartHeader.CartTotal -= coupon.DiscountAmount;
+                    cartDto.CartHeader.Discount = coupon.DiscountAmount;
+                }
+            }      
             _responseDto.Result = cartDto;
 
         }
