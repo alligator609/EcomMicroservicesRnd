@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Ecom.Services.ShoppingCartApi.Data;
 using Ecom.Services.ShoppingCartApi.Models;
 using Ecom.Services.ShoppingCartApi.Models.Dtos;
+using Ecom.Services.ShoppingCartApi.Services.IService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,11 +14,13 @@ public class CartAPIController : ControllerBase
     private readonly ApplicationDbContext _applicationDbContext;
     public ResponseDto _responseDto;
     private IMapper _mapper;
-    public CartAPIController(ApplicationDbContext applicationDbContext, IMapper mapper)
+    private IProductService _productService;
+    public CartAPIController(ApplicationDbContext applicationDbContext, IMapper mapper, IProductService productService)
     {
         _applicationDbContext = applicationDbContext;
         _responseDto = new ResponseDto();
         _mapper = mapper;
+        _productService = productService;
     }
 
     [HttpGet("GetCart/{userId}")]
@@ -29,14 +33,17 @@ public class CartAPIController : ControllerBase
             {
                 CartHeader = _mapper.Map<CartHeaderDto>(cartHeader),
             };
-            var cartDetails = await _applicationDbContext.CartDetails.FirstOrDefaultAsync(x => x.CartHeaderId == cartHeader.Id);
+            var cartDetails = _applicationDbContext.CartDetails.Where(x => x.CartHeaderId == cartHeader.Id);
             cartDto.CartDetails = (List<CartDetailsDto>)_mapper.Map<IList<CartDetailsDto>>(cartDetails);
 
-            foreach (var item in cartDto.CartDetails)
+            IEnumerable<ProductDto> products = await _productService.GetProducts();
+
+            foreach (var cartDetail in cartDto.CartDetails)
             {
-                cartDto.CartHeader.CartTotal += item.Count * item.Product.Price;
+                cartDetail.Product = products.FirstOrDefault(x => x.Id == cartDetail.ProductId);
+                cartDto.CartHeader.CartTotal += cartDetail.Count * cartDetail.Product.Price;
             }
-            _responseDto.Result = true;
+            _responseDto.Result = cartDto;
 
         }
         catch (Exception ex)

@@ -12,7 +12,7 @@ namespace Ecom.Services.ShoppingCartApi
             {
                 cfg.CreateMap<CartHeader, CartHeaderDto>().ReverseMap();
                 cfg.CreateMap<CartDetails, CartDetailsDto>().ReverseMap();
-                
+
             });
             return config;
         }
