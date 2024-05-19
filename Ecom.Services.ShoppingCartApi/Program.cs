@@ -5,6 +5,7 @@ using Ecom.Services.ShoppingCartApi.Data;
 using Ecom.Services.ShoppingCartApi.Extensions;
 using Ecom.Services.ShoppingCartApi.Services;
 using Ecom.Services.ShoppingCartApi.Services.IService;
+using Ecom.Services.ShoppingCartApi.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,17 +23,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 IMapper mapper = MappingConfig.Initialize().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 
 builder.Services.AddHttpClient("Product", config =>
 {
-    config.BaseAddress = new Uri(builder.Configuration["ServicesUrls:ProductApi"]);
-});
+    config.BaseAddress =
+     new Uri(builder.Configuration["ServicesUrls:ProductApi"]);
+}).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient("Coupon", config =>
 {
     config.BaseAddress = new Uri(builder.Configuration["ServicesUrls:CouponApi"]);
-});
+}).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
