@@ -4,6 +4,7 @@ using Ecom.Services.ShoppingCartApi.Data;
 using Ecom.Services.ShoppingCartApi.Models;
 using Ecom.Services.ShoppingCartApi.Models.Dtos;
 using Ecom.Services.ShoppingCartApi.Services.IService;
+using Ecpm.MessageBus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,20 @@ public class CartAPIController : ControllerBase
     private IMapper _mapper;
     private IProductService _productService;
     private ICouponService _couponService;
+    private IMessageBus _messageBus;
+    private IConfiguration _configuration;
 
-    public CartAPIController(ApplicationDbContext applicationDbContext, IMapper mapper, IProductService productService, ICouponService couponService)
+    public CartAPIController(ApplicationDbContext applicationDbContext, IMapper mapper, 
+        IProductService productService, ICouponService couponService, 
+        IMessageBus messageBus, IConfiguration configuration)
     {
         _applicationDbContext = applicationDbContext;
         _responseDto = new ResponseDto();
         _mapper = mapper;
         _productService = productService;
         _couponService = couponService;
+        _messageBus = messageBus;
+        _configuration = configuration;
     }
 
     [HttpGet("GetCart/{userId}")]
@@ -173,6 +180,23 @@ public class CartAPIController : ControllerBase
             cartFromDb.CouponCode = "";
             _applicationDbContext.Update(cartFromDb);
             await _applicationDbContext.SaveChangesAsync();
+            _responseDto.Result = true;
+        }
+        catch (Exception ex)
+        {
+            _responseDto.IsSuccess = false;
+            _responseDto.Message = ex.Message;
+        }
+        return _responseDto;
+    }
+
+
+    [HttpPost("EmailCartRequest")]
+    public async Task<ResponseDto> EmailCartRequest([FromBody] CartDto cartDto)
+    {
+        try
+        {
+            await _messageBus.PublishMessage(cartDto, _configuration.GetValue<string>("TopicQueueNames:EmailShoppingCart"));
             _responseDto.Result = true;
         }
         catch (Exception ex)

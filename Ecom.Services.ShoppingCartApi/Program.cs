@@ -6,6 +6,7 @@ using Ecom.Services.ShoppingCartApi.Extensions;
 using Ecom.Services.ShoppingCartApi.Services;
 using Ecom.Services.ShoppingCartApi.Services.IService;
 using Ecom.Services.ShoppingCartApi.Utility;
+using Ecpm.MessageBus;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -27,6 +28,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IMessageBus, MessageBus>();
+
 
 builder.Services.AddHttpClient("Product", config =>
 {
