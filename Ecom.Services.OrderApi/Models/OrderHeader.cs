@@ -19,6 +19,6 @@ namespace Ecom.Services.OrderApi.Models
         public string? PaymentIntentId { get; set; }
         public string? StripeSessionId { get; set; }
         public IEnumerable<OrderDetails> OrderDetails { get; set; }
-
+        public decimal OrderTotal { get; internal set; }
     }
 }
