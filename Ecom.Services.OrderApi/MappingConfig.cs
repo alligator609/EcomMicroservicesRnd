@@ -10,7 +10,7 @@ namespace Ecom.Services.OrderApi
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<OrderHeader, CartHeaderDto>()
+                cfg.CreateMap<OrderHeaderDto, CartHeaderDto>()
                 .ForMember(dest => dest.CartTotal, opt => opt.MapFrom(src => src.OrderTotal)).ReverseMap();
                 cfg.CreateMap<CartDetailsDto, OrderDetailsDto>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
