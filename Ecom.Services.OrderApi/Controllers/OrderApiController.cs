@@ -31,7 +31,7 @@ namespace Ecom.Services.OrderApi.Controllers
             _configuration = configuration;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("CreateOrder")]
         public async Task<ResponseDto> CreateOrder([FromBody] CartDto cartDto)
         {
