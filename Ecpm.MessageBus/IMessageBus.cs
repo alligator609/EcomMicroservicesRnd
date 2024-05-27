@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ecpm.MessageBus
+namespace Ecom.MessageBus
 {
     public interface IMessageBus
     {

@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Ecpm.MessageBus\Ecpm.MessageBus.csproj" />
+	  <ProjectReference Include="..\Ecpm.MessageBus\Ecom.MessageBus.csproj" />
 	</ItemGroup>
 
 </Project>

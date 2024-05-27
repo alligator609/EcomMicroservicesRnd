@@ -4,7 +4,7 @@ using Ecom.Services.ShoppingCartApi.Data;
 using Ecom.Services.ShoppingCartApi.Models;
 using Ecom.Services.ShoppingCartApi.Models.Dtos;
 using Ecom.Services.ShoppingCartApi.Services.IService;
-using Ecpm.MessageBus;
+using Ecom.MessageBus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
