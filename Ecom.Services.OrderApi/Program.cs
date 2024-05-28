@@ -9,6 +9,7 @@ using Ecom.MessageBus;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +77,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+StripeConfiguration.ApiKey = app.Configuration["StripeSettings:SecretKey"];
 app.UseHttpsRedirection();
 app.UseAuthentication();
 
